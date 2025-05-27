@@ -7,7 +7,7 @@ const { serve } = require("@upstash/workflow/express");
 const REMINDERS = [7, 5, 3, 1];
 
 export const sentReminders = serve(async (context) => {
-  const { subscriptionId } = context.requestPayload;
+  const { subscriptionId } = context?.requestPayload;
   const subscription = await fetchSubscription(context, subscriptionId);
 
   if (!subscription || subscription.status !== "active") return;
@@ -32,7 +32,7 @@ export const sentReminders = serve(async (context) => {
 });
 
 const fetchSubscription = async (context, subscriptionId) => {
-  return await context.run("get subscription", () => {
+  return await context.run("get subscription", async () => {
     return Subscription.findById(subscriptionId).populate("user", "name email");
   });
 };
