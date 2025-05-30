@@ -27,7 +27,11 @@ export const sentReminders = serve(async (context) => {
         reminderDate
       );
     }
-    await triggerReminder(context, `reminder-${daysBefore} days before`);
+    await triggerReminder(
+      context,
+      `reminder-${daysBefore} days before`,
+      subscription
+    );
   }
 });
 
@@ -42,9 +46,12 @@ const sleepUntilReminder = async (context, label, date) => {
   await context.sleepUntil(label, date.toDate());
 };
 
-const triggerReminder = async (context, label) => {
-  return await context.run(label, () => {
-    console.log(`Triggering reminder for ${label}`);
-    // Here you can send the reminder to the user
-  });
+const triggerReminder = async (context, label, subscription) => {
+  // return await context.run(label, async () => {
+  //   await sendReminderEmail({
+  //     to: subscription.user.email,
+  //     type: label,
+  //     subscription: subscription,
+  //   });
+  // });
 };
